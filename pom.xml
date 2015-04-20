@@ -4,7 +4,7 @@
 
   <groupId>edu.scut.wusir</groupId>
   <artifactId>socketfyMultiTest</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>socketfyMultiTest</name>
@@ -21,11 +21,10 @@
       <version>4.2</version>
       <scope>test</scope>
     </dependency>
-    
     <dependency>
     	<groupId>com.fy.socket</groupId>
   		<artifactId>fysocketAPPClient</artifactId>
- 		<version>1.0.1</version>
+ 		<version>1.0.2</version>
     </dependency>
   </dependencies>
 </project>
