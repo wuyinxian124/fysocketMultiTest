@@ -1,0 +1,2 @@
+# fysocketMultiTest
+fysocketMultiTest 该项目用于fysocket压力测试，模拟多个用户端连接，收发消息
