@@ -20,8 +20,9 @@ import fy.socket.SocketAPPClient.util.logger.LoggerUtil;
 
 public class MultMain {
 	
+	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
-	private final static int StaticNum = 200;
+	private final static int StaticNum = 100;
 	
 	public void start(String[] args) {
 		
@@ -30,40 +31,40 @@ public class MultMain {
 		
 		if(args.length <1){
 			connectNum = StaticNum;
-			System.out.println("args is null,so set connectNum is " + connectNum);
+			logger.log(Level.INFO, "args is null,so set connectNum is " + connectNum);
 		}else{
 			try{
 				connectNum = Integer.parseInt(args[0]);
-				System.out.println("connectNum is setting " + connectNum);
+				logger.log(Level.INFO, "connectNum is setting " + connectNum);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		
-		Phaser phaser=new Phaser(connectNum);
+		Phaser phaser=new Phaser();
 //		CountDownLatch startCdl = new CountDownLatch(1);// 启动的闸门值为 1
 		CountDownLatch doneCdl = new CountDownLatch(connectNum);// 连接的总数为 100
 		
-		for (int i = 1; i <= connectNum; i++) {
-			SocketConnect tt = new SocketConnect(doneCdl,i, phaser);
-			new Thread(tt, "connectThread" + i).start();
+		for (int i = 0; i < connectNum; i++) {
+			SocketConnect sc = new SocketConnect(doneCdl,i, phaser);
+			new Thread(sc, "connectThread" + i).start();
 		}
 		// 记录所有连接线程的开始时间
 		long start = System.nanoTime();
 		// 所有线程虽然都已建立，并 start。但只有等闸门打开才都开始运行。
 //		startCdl.countDown();
 		try {
+			
 			doneCdl.await();// 主线程等待所有连接结束
 			// 连接达到峰值后，执行一些测试逻辑代码
-			System.out.printf("Terminated: %s\n",phaser.isTerminated());
+			logger.log(Level.INFO, "Terminated: %s\n",phaser.isTerminated());
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		// 记录所有连接线程的结束时间
 		long end = System.nanoTime();
-		System.out
-				.println("The task takes time(ms): " + (end - start) / 100000);
+		logger.log(Level.INFO, "The task takes time(ms): " + (end - start) / 100000);
 
 	}
 }

@@ -14,12 +14,14 @@ import fy.socket.SocketAPPClient.exception.HandshakeWebsocketException;
 import fy.socket.SocketAPPClient.service.APPClient;
 import fy.socket.SocketAPPClient.util.logger.LoggerUtil;
 
-public 
-class SocketConnect implements Runnable {
+public class SocketConnect implements Runnable {
+	
+	
+	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
 	private final int PORT = 8877;
-	private final String HOST = "222.201.139.162";
-	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
+	private final String HOST = "222.201.139.159";
+	
 //	private static CountDownLatch startCdl; // 用于启动所有连接线程的闸门
 	private static CountDownLatch doneCdl;// 所有连接工作都结束的控制器
 	private int tagi;
@@ -35,40 +37,39 @@ class SocketConnect implements Runnable {
 	}
 
 	public void run() {
+		phaser.register();
 		// 确保线程都到达。
-		phaser.arriveAndAwaitAdvance();
 		
 		try {
 			// 此处需要代码清单一的那些连接操作
-			//new URI("ws://localhost:8887")
-			try {
-				APPClient client = new APPClient(HOST, PORT);
-				client.connection();
-				
-				TimeUnit.SECONDS.sleep(5);
-				client.virify("user"+tagi, "verify"+tagi,"homewtb");
-				logger.log(Level.INFO, "user"+tagi + " conncet and verify ");
-				TimeUnit.SECONDS.sleep(10);
-				
-				// 等待所有线程一起收发消息
-				phaser.arriveAndAwaitAdvance();
-				
-				for(int i = 0 ;i<60;i++){
-					int chatid = new Random().nextInt(5);
-					String msg = "chatroom"+chatid+"##"+0+"##"+"user"+tagi+" send a mes "+i + " to chatroom"+chatid;
-					logger.log(Level.INFO, "user"+tagi + " send a msg to" + " chatroom"+chatid+" msg=("+msg+")");
-					client.sendMsg(msg,0,0);
-					TimeUnit.SECONDS.sleep(1);
-				}
-				
-			} catch (ConnectWebsocketException  e) {
-				e.printStackTrace();
-			}
-			// 等待所有线程一起结束
+			// new URI("ws://localhost:8887")
+			APPClient client = new APPClient(HOST, PORT);
+			client.connection();
+
 			phaser.arriveAndAwaitAdvance();
+			TimeUnit.SECONDS.sleep(5);
+			client.virify("user" + tagi, "verify" + tagi, "homewtb");
+			logger.log(Level.INFO, "user" + tagi + " conncet and verify ");
+			TimeUnit.SECONDS.sleep(10);
+
+			// 等待所有线程一起收发消息
+			logger.log(Level.INFO,"等待线程数目:"+phaser.arriveAndAwaitAdvance());
+			for (int i = 0; i < 10; i++) {
+				int chatid = new Random().nextInt(5);
+				String msg = "chatroom" + chatid + "##" + 0 + "##" + "user"
+						+ tagi + " send a mes " + i + " to chatroom" + chatid;
+				logger.log(Level.INFO, "user" + tagi + " send a msg to"
+						+ " chatroom" + chatid + " msg=(" + msg + ")");
+				client.sendMsg(msg, 0, 0);
+				TimeUnit.SECONDS.sleep(1);
+			}
+
+			// 等待所有线程一起结束
 			// 测试结束
-			phaser.arriveAndDeregister();
 			doneCdl.countDown();
+		} catch (ConnectWebsocketException  e) {
+			phaser.arriveAndDeregister();
+			e.printStackTrace();
 		} catch (Exception e) {
 			phaser.arriveAndDeregister();
 			e.printStackTrace();
