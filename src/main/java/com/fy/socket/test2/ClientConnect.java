@@ -49,7 +49,10 @@ public class ClientConnect implements Runnable {
 	public void run() {
 		try {
 			start0("user" + tagid, "verify" + tagid);
-		} catch (InterruptedException | URISyntaxException e) {
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

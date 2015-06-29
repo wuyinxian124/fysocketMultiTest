@@ -7,10 +7,8 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fy.socket.SocketAPPClient.exception.ConnectWebsocketException;
-import fy.socket.SocketAPPClient.exception.HandshakeWebsocketException;
-import fy.socket.SocketAPPClient.service.APPClient;
-import fy.socket.SocketAPPClient.util.logger.LoggerUtil;
+import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
+
 
 /**
  * Hello world!

@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fy.socket.SocketAPPClient.exception.ConnectWebsocketException;
-import fy.socket.SocketAPPClient.exception.HandshakeWebsocketException;
-import fy.socket.SocketAPPClient.service.APPClient;
-import fy.socket.SocketAPPClient.util.logger.LoggerUtil;
+import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
+import fy.socket.JavaWebsocket.service.APPClient;
+import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
+
 
 public class SocketConnect implements Runnable {
 	
@@ -48,7 +48,7 @@ public class SocketConnect implements Runnable {
 
 			phaser.arriveAndAwaitAdvance();
 			TimeUnit.SECONDS.sleep(5);
-			client.virify("user" + tagi, "verify" + tagi, "homewtb");
+			client.verify("user" + tagi, "verify" + tagi, "homewtb");
 			logger.log(Level.INFO, "user" + tagi + " conncet and verify ");
 			TimeUnit.SECONDS.sleep(10);
 
