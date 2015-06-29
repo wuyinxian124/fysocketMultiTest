@@ -19,7 +19,7 @@ public class MultClient {
 	public void start0(){
 		int i = 0;
 		while(i<StaticNum){
-			new Thread(new ClientConnect(HOST,phaser,i)).start();
+			new Thread(new ClientConnect(HOST,phaser,i++)).start();
 		}
 	}
 

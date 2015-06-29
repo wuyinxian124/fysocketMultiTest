@@ -34,13 +34,16 @@ public class ClientConnect implements Runnable {
 		phaser.arriveAndAwaitAdvance();
 		TimeUnit.SECONDS.sleep(3);
 		client.send(user + ":" + verify + ":" + "homewtb");
+		String chatid = user.substring(4);
 		System.out.println("等待线程数目:" + phaser.arriveAndAwaitAdvance());
 		int i = 0;
 		while (i < 10) {
-			int chatid = new Random().nextInt(5);
-			client.send("chatroom" + chatid + "##0##" + user + " send a msg "
-					+ i);
+//			int chatid = new Random().nextInt(5);
+			String hello = "send a msg "+i;
+			String content ="chatroom" + chatid + "##0##content:"+hello +",senderAccount\":\""+user+"\",\"chatview:"+"chatroom" + chatid ;
+			client.send(content);
 			i++;
+			TimeUnit.SECONDS.sleep(10);
 		}
 		phaser.arriveAndDeregister();
 	}
