@@ -25,6 +25,7 @@ import org.java_websocket.drafts.Draft_76;
 import org.java_websocket.handshake.ServerHandshake;
 
 public class JavaWebsocketClient extends JFrame implements ActionListener {
+	
     private static final long serialVersionUID = -6056260699202978657L;
 
     private final JTextField uriField;

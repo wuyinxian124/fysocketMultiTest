@@ -6,13 +6,18 @@ import java.util.Random;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_10;
 import org.java_websocket.drafts.Draft_17;
+import org.java_websocket.util.logger.LoggerUtil;
 
 public class ClientConnect implements Runnable {
 
+	
+	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
+	
 	private String HOST;
 	private int tagid;
 
@@ -35,7 +40,7 @@ public class ClientConnect implements Runnable {
 		TimeUnit.SECONDS.sleep(3);
 		client.send(user + ":" + verify + ":" + "homewtb");
 		String chatid = user.substring(4);
-		System.out.println("等待线程数目:" + phaser.arriveAndAwaitAdvance());
+		logger.log(Level.INFO,"等待线程数目:" + phaser.arriveAndAwaitAdvance());
 		int i = 0;
 		while (i < 10) {
 //			int chatid = new Random().nextInt(5);
