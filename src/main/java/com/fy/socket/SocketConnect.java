@@ -11,13 +11,14 @@ import java.util.logging.Logger;
 
 import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
 import fy.socket.JavaWebsocket.service.APPClient;
+
 import org.java_websocket.util.logger.LoggerUtil;
 
 public class SocketConnect implements Runnable {
 	
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
-	
+	private final static int StaticCRNum = 10;
 	private final int PORT = 8877;
 	private final String HOST = "222.201.139.159";
 	
@@ -42,7 +43,7 @@ public class SocketConnect implements Runnable {
 		try {
 			// 此处需要代码清单一的那些连接操作
 			// new URI("ws://localhost:8887")
-			APPClient client = new APPClient(HOST, PORT);
+			APPClient client = new APPClient(HOST, PORT,tagi);
 			client.connection();
 
 			phaser.arriveAndAwaitAdvance();
@@ -52,15 +53,19 @@ public class SocketConnect implements Runnable {
 			TimeUnit.SECONDS.sleep(10);
 
 			// 等待所有线程一起收发消息
+			String chatid = tagi%StaticCRNum +"";
 			logger.log(Level.INFO,"等待线程数目:"+phaser.arriveAndAwaitAdvance());
 			for (int i = 0; i < 10; i++) {
-				int chatid = new Random().nextInt(5);
-				String msg = "chatroom" + chatid + "##" + 0 + "##" + "user"
-						+ tagi + " send a mes " + i + " to chatroom" + chatid;
-				logger.log(Level.INFO, "user" + tagi + " send a msg to"
-						+ " chatroom" + chatid + " msg=(" + msg + ")");
-				client.sendMsg(msg, 0, 0);
-				TimeUnit.SECONDS.sleep(1);
+//				int chatid = new Random().nextInt(5);
+//				String msg = "chatroom" + chatid + "##" + 0 + "##" + "user"
+//						+ tagi + " send a mes " + i + " to chatroom" + chatid;
+//				logger.log(Level.INFO, "user" + tagi + " send a msg to"
+//						+ " chatroom" + chatid + " msg=(" + msg + ")");
+				String hello = "send a msg "+i;
+				String content ="chatroom" + chatid + "##0##content:"+hello +",senderAccount\":\""+"user" + tagi+"\",\"chatview:"+"chatroom" + chatid ;
+				logger.log(Level.INFO,"发送消息 "+content);
+				client.sendMsg(content, 0, 0);
+				TimeUnit.SECONDS.sleep(5);
 			}
 
 			// 等待所有线程一起结束

@@ -6,8 +6,11 @@ public class MainStart {
 
 	public static void main(String[] args) {
 
-		//new MultMain().start(args);
-		new MultClient().start0();
+		// 使用appCient 测试
+		new MultMain().start(args);
+		
+		// 直接使用fysocket 项目中的client
+		//new MultClient().start0();
 	}
 
 }
