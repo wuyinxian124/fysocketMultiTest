@@ -4,8 +4,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.Phaser;
 import java.util.logging.Logger;
 
-import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
-
+import org.java_websocket.util.logger.LoggerUtil;
 
 public class MultClient {
 

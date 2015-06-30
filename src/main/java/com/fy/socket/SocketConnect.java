@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 
 import fy.socket.JavaWebsocket.exception.ConnectWebsocketException;
 import fy.socket.JavaWebsocket.service.APPClient;
-import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
-
+import org.java_websocket.util.logger.LoggerUtil;
 
 public class SocketConnect implements Runnable {
 	

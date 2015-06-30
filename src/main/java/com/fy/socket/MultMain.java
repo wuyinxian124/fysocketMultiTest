@@ -7,8 +7,7 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import fy.socket.JavaWebsocket.util.logger.LoggerUtil;
-
+import org.java_websocket.util.logger.LoggerUtil;
 
 /**
  * Hello world!
