@@ -19,20 +19,40 @@ public class MultMain {
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
-	private final static int StaticNum = 100;
+	/**
+	 * 模拟用户并发数目
+	 */
+	private final static int StaticNum = 0;
+	/**
+	 * 用户名开始
+	 */
+	private final static int StaticLastNum = 100;
+	/**
+	 * 模拟每个互动室成员数目
+	 */
+	//private final static int StaticCRNum = 10;
 	
 	public void start(String[] args) {
 		
 		
 		int connectNum = 0;
-		
-		if(args.length <1){
-			connectNum = StaticNum;
-			logger.log(Level.INFO, "args is null,so set connectNum is " + connectNum);
-		}else{
+		int connectLastNum = 100;
+		int sendTimes = 3;
+		int sendWaite = 10;
+		if(args.length == 4){
 			try{
 				connectNum = Integer.parseInt(args[0]);
-				logger.log(Level.INFO, "connectNum is setting " + connectNum);
+				connectLastNum = Integer.parseInt(args[1]);
+				sendTimes = Integer.parseInt(args[2]);
+				sendWaite = Integer.parseInt(args[3]);
+				logger.log(Level.INFO, "设置参数connectNum is setting .connectNum=" + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite"+sendWaite);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}			
+		}else{
+			try{
+				logger.log(Level.INFO, "设置参数connectNum no setting,so  using default value 0-100 ,3次，间隔10s ." + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite"+sendWaite );
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -40,14 +60,23 @@ public class MultMain {
 		
 		Phaser phaser=new Phaser();
 //		CountDownLatch startCdl = new CountDownLatch(1);// 启动的闸门值为 1
-		CountDownLatch doneCdl = new CountDownLatch(connectNum);// 连接的总数为 100
+		CountDownLatch doneCdl = new CountDownLatch(connectLastNum - connectNum);// 连接的总数为 100
 		
-		for (int i = 0; i < connectNum; i++) {
-			SocketConnect sc = new SocketConnect(doneCdl,i, phaser);
+		for (int i = connectNum; i < connectLastNum ; i++) {
+			
+			SocketConnect sc = new SocketConnect(doneCdl,i, phaser,sendTimes,sendWaite);
 			new Thread(sc, "connectThread" + i).start();
+			if(i%100 == 99){
+				try {
+					TimeUnit.SECONDS.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		// 记录所有连接线程的开始时间
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 		// 所有线程虽然都已建立，并 start。但只有等闸门打开才都开始运行。
 //		startCdl.countDown();
 		try {
@@ -60,8 +89,9 @@ public class MultMain {
 			e.printStackTrace();
 		}
 		// 记录所有连接线程的结束时间
-		long end = System.nanoTime();
-		logger.log(Level.INFO, "The task takes time(ms): " + (end - start) / 100000);
+		long end = System.currentTimeMillis();
+		float execTime = (float)(end - start) / 1000;
+		logger.log(Level.INFO, "The task takes time : " + execTime +" (秒）");
 
 	}
 }
