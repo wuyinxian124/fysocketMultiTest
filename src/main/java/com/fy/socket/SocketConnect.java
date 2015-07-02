@@ -23,7 +23,7 @@ public class SocketConnect implements Runnable {
 	 */
 
 	private final int PORT = 8877;
-	private final String HOST = "222.201.139.159";
+	//private final String HOST = "222.201.139.159";
 	
 //	private static CountDownLatch startCdl; // 用于启动所有连接线程的闸门
 	private static CountDownLatch doneCdl;// 所有连接工作都结束的控制器
@@ -31,14 +31,15 @@ public class SocketConnect implements Runnable {
 	private Phaser phaser;
 	private int sendTimes;
 	private int sendWaite;
-	
-	public SocketConnect( CountDownLatch doneCdl,int i,Phaser phaser,int sendTimes,int sendWaite) {
+	private String hostIP;
+	public SocketConnect(String hostIP, CountDownLatch doneCdl,int i,Phaser phaser,int sendTimes,int sendWaite) {
 //		this.startCdl = startCdl;
 		this.doneCdl = doneCdl;
 		this.tagi = i;
 		this.phaser=phaser;
 		this.sendWaite = sendWaite;
 		this.sendTimes = sendTimes;
+		this.hostIP = hostIP;
 	}
 
 	public void run() {
@@ -48,7 +49,7 @@ public class SocketConnect implements Runnable {
 		try {
 			// 此处需要代码清单一的那些连接操作
 			// new URI("ws://localhost:8887")
-			APPClient client = new APPClient(HOST, PORT,tagi);
+			APPClient client = new APPClient(hostIP, PORT,tagi);
 			client.connection();
 
 			phaser.arriveAndAwaitAdvance();

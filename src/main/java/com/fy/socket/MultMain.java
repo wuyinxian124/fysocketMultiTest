@@ -19,6 +19,8 @@ public class MultMain {
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
+	
+	
 	/**
 	 * 模拟用户并发数目
 	 */
@@ -35,16 +37,18 @@ public class MultMain {
 	public void start(String[] args) {
 		
 		
-		int connectNum = 0;
-		int connectLastNum = 100;
+		int connectNum = 100;
+		int connectLastNum = 200;
 		int sendTimes = 3;
 		int sendWaite = 10;
-		if(args.length == 4){
+		String hostIP = "222.201.139.159";
+		if(args.length == 5){
 			try{
 				connectNum = Integer.parseInt(args[0]);
 				connectLastNum = Integer.parseInt(args[1]);
 				sendTimes = Integer.parseInt(args[2]);
 				sendWaite = Integer.parseInt(args[3]);
+				hostIP = args[4];
 				logger.log(Level.INFO, "设置参数connectNum is setting .connectNum=" + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite="+sendWaite);
 				
 			}catch(Exception e){
@@ -64,7 +68,7 @@ public class MultMain {
 		
 		for (int i = connectNum; i < connectLastNum ; i++) {
 			
-			SocketConnect sc = new SocketConnect(doneCdl,i, phaser,sendTimes,sendWaite);
+			SocketConnect sc = new SocketConnect(hostIP,doneCdl,i, phaser,sendTimes,sendWaite);
 			new Thread(sc, "connectThread" + i).start();
 			if(i%100 == 99){
 				try {
