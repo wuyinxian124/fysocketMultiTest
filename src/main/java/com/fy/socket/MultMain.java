@@ -45,14 +45,14 @@ public class MultMain {
 				connectLastNum = Integer.parseInt(args[1]);
 				sendTimes = Integer.parseInt(args[2]);
 				sendWaite = Integer.parseInt(args[3]);
-				logger.log(Level.INFO, "设置参数connectNum is setting .connectNum=" + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite"+sendWaite);
+				logger.log(Level.INFO, "设置参数connectNum is setting .connectNum=" + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite="+sendWaite);
 				
 			}catch(Exception e){
 				e.printStackTrace();
 			}			
 		}else{
 			try{
-				logger.log(Level.INFO, "设置参数connectNum no setting,so  using default value 0-100 ,3次，间隔10s ." + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite"+sendWaite );
+				logger.log(Level.INFO, "设置参数connectNum no setting,so  using default value 0-100 ,3次，间隔10s ." + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite="+sendWaite );
 			}catch(Exception e){
 				e.printStackTrace();
 			}
