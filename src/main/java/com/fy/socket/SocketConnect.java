@@ -18,7 +18,10 @@ public class SocketConnect implements Runnable {
 	
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
-	private final static int StaticCRNum = 10;
+	/**
+	 * 依照模拟用户数目，指定互动时数目。
+	 */
+
 	private final int PORT = 8877;
 	private final String HOST = "222.201.139.159";
 	
@@ -26,14 +29,16 @@ public class SocketConnect implements Runnable {
 	private static CountDownLatch doneCdl;// 所有连接工作都结束的控制器
 	private int tagi;
 	private Phaser phaser;
-
+	private int sendTimes;
+	private int sendWaite;
 	
-	
-	public SocketConnect( CountDownLatch doneCdl,int i,Phaser phaser) {
+	public SocketConnect( CountDownLatch doneCdl,int i,Phaser phaser,int sendTimes,int sendWaite) {
 //		this.startCdl = startCdl;
 		this.doneCdl = doneCdl;
 		this.tagi = i;
 		this.phaser=phaser;
+		this.sendWaite = sendWaite;
+		this.sendTimes = sendTimes;
 	}
 
 	public void run() {
@@ -53,19 +58,14 @@ public class SocketConnect implements Runnable {
 			TimeUnit.SECONDS.sleep(10);
 
 			// 等待所有线程一起收发消息
-			String chatid = tagi%StaticCRNum +"";
+			String chatid = tagi/10 +"";
 			logger.log(Level.INFO,"等待线程数目:"+phaser.arriveAndAwaitAdvance());
-			for (int i = 0; i < 10; i++) {
-//				int chatid = new Random().nextInt(5);
-//				String msg = "chatroom" + chatid + "##" + 0 + "##" + "user"
-//						+ tagi + " send a mes " + i + " to chatroom" + chatid;
-//				logger.log(Level.INFO, "user" + tagi + " send a msg to"
-//						+ " chatroom" + chatid + " msg=(" + msg + ")");
+			for (int i = 0; i < sendTimes; i++) {
 				String hello = "send a msg "+i;
 				String content ="chatroom" + chatid + "##0##content:"+hello +",senderAccount\":\""+"user" + tagi+"\",\"chatview:"+"chatroom" + chatid ;
 				logger.log(Level.INFO,"发送消息 "+content);
 				client.sendMsg(content, 0, 0);
-				TimeUnit.SECONDS.sleep(5);
+				TimeUnit.SECONDS.sleep(sendWaite);
 			}
 
 			// 等待所有线程一起结束
