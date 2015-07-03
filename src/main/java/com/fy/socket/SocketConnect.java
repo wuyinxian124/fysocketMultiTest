@@ -39,8 +39,8 @@ public class SocketConnect implements Runnable {
 		this.doneCdl = doneCdl;
 		this.tagi = i;
 		this.phaser=phaser;
-		this.sendWaite = sendWaite;
 		this.sendTimes = sendTimes;
+		this.sendWaite = sendWaite;
 		this.hostIP = hostIP;
 	}
 
