@@ -55,10 +55,10 @@ public class SocketConnect implements Runnable {
 			client.connection();
 
 			phaser.arriveAndAwaitAdvance();
-			TimeUnit.SECONDS.sleep(5);
+		    // TimeUnit.SECONDS.sleep(5);
 			client.verify("user" + tagi, "verify" + tagi, "homewtb");
 			logger.log(Level.INFO, "user" + tagi + " conncet and verify ");
-			TimeUnit.SECONDS.sleep(10);
+			//TimeUnit.SECONDS.sleep(10);
 
 			// 等待所有线程一起收发消息
 			String chatid = tagi/10 +"";
