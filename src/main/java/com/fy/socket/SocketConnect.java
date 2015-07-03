@@ -32,6 +32,8 @@ public class SocketConnect implements Runnable {
 	private int sendTimes;
 	private int sendWaite;
 	private String hostIP;
+	
+	
 	public SocketConnect(String hostIP, CountDownLatch doneCdl,int i,Phaser phaser,int sendTimes,int sendWaite) {
 //		this.startCdl = startCdl;
 		this.doneCdl = doneCdl;
@@ -69,15 +71,17 @@ public class SocketConnect implements Runnable {
 				TimeUnit.SECONDS.sleep(sendWaite);
 			}
 
-			// 等待所有线程一起结束
-			// 测试结束
-			doneCdl.countDown();
+
 		} catch (ConnectWebsocketException  e) {
 			phaser.arriveAndDeregister();
 			e.printStackTrace();
 		} catch (Exception e) {
 			phaser.arriveAndDeregister();
 			e.printStackTrace();
+		}finally{
+			// 等待所有线程一起结束
+			// 测试结束
+			doneCdl.countDown();
 		}
 	}
 }
