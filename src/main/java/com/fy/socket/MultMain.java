@@ -19,25 +19,10 @@ public class MultMain {
 	
 	private Logger logger = LoggerUtil.getLogger(this.getClass().getName());
 	
-	
-	
-	/**
-	 * 模拟用户并发数目
-	 */
-	private final static int StaticNum = 0;
-	/**
-	 * 用户名开始
-	 */
-	private final static int StaticLastNum = 100;
-	/**
-	 * 模拟每个互动室成员数目
-	 */
-	//private final static int StaticCRNum = 10;
-	
 	public void start(String[] args) {
 		
 		
-		int connectNum = 100;
+		int connectNum = 0;
 		int connectLastNum = 200;
 		int sendTimes = 3;
 		int sendWaite = 10;
@@ -70,14 +55,13 @@ public class MultMain {
 			
 			SocketConnect sc = new SocketConnect(hostIP,doneCdl,i, phaser,sendTimes,sendWaite);
 			new Thread(sc, "connectThread" + i).start();
-			if(i%100 == 99){
-				try {
-					TimeUnit.SECONDS.sleep(20);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+//			if(i%100 == 99){
+//				try {
+//					TimeUnit.SECONDS.sleep(20);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
 		}
 		// 记录所有连接线程的开始时间
 		long start = System.currentTimeMillis();
