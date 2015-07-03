@@ -96,6 +96,14 @@ public class MultMain {
 		long end = System.currentTimeMillis();
 		float execTime = (float)(end - start) / 1000;
 		logger.log(Level.INFO, "The task takes time : " + execTime +" (秒）");
-
+		try {
+			logger.log(Level.INFO, "等待5秒，然后强制退出");
+			TimeUnit.SECONDS.sleep(5);
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 }
