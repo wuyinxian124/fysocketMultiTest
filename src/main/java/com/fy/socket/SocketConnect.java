@@ -26,9 +26,9 @@ public class SocketConnect implements Runnable {
 	//private final String HOST = "222.201.139.159";
 	
 //	private static CountDownLatch startCdl; // 用于启动所有连接线程的闸门
-	private static CountDownLatch doneCdl;// 所有连接工作都结束的控制器
+	private  CountDownLatch doneCdl;// 所有连接工作都结束的控制器
 	private int tagi;
-	private Phaser phaser;
+	//private Phaser phaser;
 	private int sendTimes;
 	private int sendWaite;
 	private String hostIP;
@@ -38,14 +38,14 @@ public class SocketConnect implements Runnable {
 //		this.startCdl = startCdl;
 		this.doneCdl = doneCdl;
 		this.tagi = i;
-		this.phaser=phaser;
+		//this.phaser=phaser;
 		this.sendTimes = sendTimes;
 		this.sendWaite = sendWaite;
 		this.hostIP = hostIP;
 	}
 
 	public void run() {
-		phaser.register();
+	//	phaser.register();
 		// 确保线程都到达。
 		
 		try {
@@ -54,7 +54,7 @@ public class SocketConnect implements Runnable {
 			APPClient client = new APPClient(hostIP, PORT,tagi);
 			client.connection();
 
-			phaser.arriveAndAwaitAdvance();
+			//phaser.arriveAndAwaitAdvance();
 		    // TimeUnit.SECONDS.sleep(5);
 			client.verify("user" + tagi, "verify" + tagi, "homewtb");
 			logger.log(Level.INFO, "user" + tagi + " conncet and verify ");
@@ -62,7 +62,7 @@ public class SocketConnect implements Runnable {
 
 			// 等待所有线程一起收发消息
 			String chatid = tagi/10 +"";
-			logger.log(Level.INFO,"等待线程数目:"+phaser.arriveAndAwaitAdvance());
+		//	logger.log(Level.INFO,"等待线程数目:"+phaser.arriveAndAwaitAdvance());
 			for (int i = 0; i < sendTimes; i++) {
 				String hello = "send a msg "+i;
 				String content ="chatroom" + chatid + "##0##content:"+hello +",senderAccount\":\""+"user" + tagi+"\",\"chatview:"+"chatroom" + chatid ;
@@ -71,16 +71,16 @@ public class SocketConnect implements Runnable {
 				TimeUnit.SECONDS.sleep(sendWaite);
 			}
 
+			//client.close(0);
 
 		} catch (ConnectWebsocketException  e) {
-			phaser.arriveAndDeregister();
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		} catch (Exception e) {
-			phaser.arriveAndDeregister();
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		}finally{
 			// 等待所有线程一起结束
 			// 测试结束
+			
 			doneCdl.countDown();
 		}
 	}

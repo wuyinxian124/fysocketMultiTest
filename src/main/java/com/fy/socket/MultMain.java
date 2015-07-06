@@ -37,23 +37,23 @@ public class MultMain {
 				logger.log(Level.INFO, "设置参数connectNum is setting .connectNum=" + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite="+sendWaite);
 				
 			}catch(Exception e){
-				e.printStackTrace();
+				 logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}			
 		}else{
 			try{
 				logger.log(Level.INFO, "设置参数connectNum no setting,so  using default value 0-100 ,3次，间隔10s ." + connectNum+",connectLastNum="+ connectLastNum+",sendTimes=" +sendTimes +",sendWaite="+sendWaite );
 			}catch(Exception e){
-				e.printStackTrace();
+				 logger.log(Level.SEVERE,"error 异常"+e.toString());
 			}
 		}
 		
-		Phaser phaser=new Phaser();
+		//Phaser phaser=new Phaser();
 //		CountDownLatch startCdl = new CountDownLatch(1);// 启动的闸门值为 1
 		CountDownLatch doneCdl = new CountDownLatch(connectLastNum - connectNum);// 连接的总数为 100
 		
 		for (int i = connectNum; i < connectLastNum ; i++) {
 			
-			SocketConnect sc = new SocketConnect(hostIP,doneCdl,i, phaser,sendTimes,sendWaite);
+			SocketConnect sc = new SocketConnect(hostIP,doneCdl,i, null,sendTimes,sendWaite);
 			new Thread(sc, "connectThread" + i).start();
 //			if(i%100 == 99){
 //				try {
@@ -71,10 +71,10 @@ public class MultMain {
 			
 			doneCdl.await();// 主线程等待所有连接结束
 			// 连接达到峰值后，执行一些测试逻辑代码
-			logger.log(Level.INFO, "Terminated: %s\n",phaser.isTerminated());
+		//	logger.log(Level.INFO, "Terminated: %s\n",phaser.isTerminated());
 			
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		}
 		// 记录所有连接线程的结束时间
 		long end = System.currentTimeMillis();
@@ -86,7 +86,7 @@ public class MultMain {
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		}
 		System.exit(0);
 	}
