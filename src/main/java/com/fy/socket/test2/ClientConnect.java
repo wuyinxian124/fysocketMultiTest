@@ -58,10 +58,9 @@ public class ClientConnect implements Runnable {
 		try {
 			start0("user" + tagid, "verify" + tagid);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			 logger.log(Level.SEVERE,"error 异常"+e.toString());
 		}
 	}
 }
